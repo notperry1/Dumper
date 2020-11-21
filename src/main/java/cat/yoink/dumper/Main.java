@@ -38,19 +38,26 @@ public class Main
             for (Map.Entry<String, byte[]> e : cache.entrySet())
             {
                 ZipEntry entry = new ZipEntry(e.getKey().replace(".", "/") + ".class");
-                try { stream.putNextEntry(entry);
+                try
+                {
+                    stream.putNextEntry(entry);
 
-                stream.write(e.getValue());
-                stream.closeEntry(); } catch (Exception ignored) { }
+                    stream.write(e.getValue());
+                    stream.closeEntry();
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
             }
 
             stream.closeEntry();
-
-            logger.info("Ended");
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+
+        logger.info("Ended");
     }
 }
