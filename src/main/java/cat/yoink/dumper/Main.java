@@ -14,6 +14,12 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Class dumper for loaders.
+ *
+ * @author yoink
+ * @since November 11th 2020
+ */
 @Mod(modid = "dumper")
 public class Main
 {
@@ -21,9 +27,9 @@ public class Main
 
     @SuppressWarnings("unchecked")
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
+    public void initialize(FMLInitializationEvent event)
     {
-        logger.info("Started");
+        logger.info("Dumping class loader...");
 
         try
         {
@@ -32,7 +38,7 @@ public class Main
 
             Map<String, byte[]> cache = (Map<String, byte[]>) field.get(Launch.classLoader);
 
-            File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar");
+            File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
             ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
 
             for (Map.Entry<String, byte[]> e : cache.entrySet())
@@ -58,6 +64,6 @@ public class Main
             e.printStackTrace();
         }
 
-        logger.info("Ended");
+        logger.info("Finished dumping classloader");
     }
 }
