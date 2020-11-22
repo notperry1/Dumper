@@ -29,19 +29,19 @@ public class Main
 
     @SuppressWarnings("unchecked")
     @Mod.EventHandler
-    public void initialize(FMLInitializationEvent event) throws NoSuchFieldException, IOException, IllegalAccessException
+    public void initialize(final FMLInitializationEvent event) throws NoSuchFieldException, IOException, IllegalAccessException
     {
-        logger.info("Dumping class loader...");
+        this.logger.info("Dumping class loader...");
 
-        Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
+        final Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
         field.setAccessible(true);
-        Map<String, byte[]> loader = (Map<String, byte[]>) field.get(Launch.classLoader);
+        final Map<String, byte[]> loader = (Map<String, byte[]>) field.get(Launch.classLoader);
 
-        File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
-        ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
+        final File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
+        final ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
 
         loader.forEach((name, bytes) -> {
-            ZipEntry entry = new ZipEntry(name.replace(".", "/") + ".class");
+            final ZipEntry entry = new ZipEntry(name.replace(".", "/") + ".class");
 
             try
             {
@@ -50,14 +50,14 @@ public class Main
                 stream.write(bytes);
                 stream.closeEntry();
             }
-            catch (Exception ex)
+            catch (final Exception ex)
             {
-                logger.info("Failed to dump " + name.replace("/", "."));
+                this.logger.info("Failed to dump " + name.replace("/", "."));
             }
         });
 
         stream.closeEntry();
 
-        logger.info("Finished dumping classloader");
+        this.logger.info("Finished dumping classloader");
     }
 }
