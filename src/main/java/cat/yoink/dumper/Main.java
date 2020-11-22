@@ -35,28 +35,26 @@ public class Main
 
         Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
         field.setAccessible(true);
-
-        Map<String, byte[]> cache = (Map<String, byte[]>) field.get(Launch.classLoader);
+        Map<String, byte[]> loader = (Map<String, byte[]>) field.get(Launch.classLoader);
 
         File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
         ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
 
-        for (Map.Entry<String, byte[]> e : cache.entrySet())
-        {
-            ZipEntry entry = new ZipEntry(e.getKey().replace(".", "/") + ".class");
+        loader.forEach((name, bytes) -> {
+            ZipEntry entry = new ZipEntry(name.replace(".", "/") + ".class");
 
             try
             {
                 stream.putNextEntry(entry);
 
-                stream.write(e.getValue());
+                stream.write(bytes);
                 stream.closeEntry();
             }
             catch (Exception ex)
             {
-                logger.info("Failed to dump " + e.getKey().replace("/", "."));
+                logger.info("Failed to dump " + name.replace("/", "."));
             }
-        }
+        });
 
         stream.closeEntry();
 
