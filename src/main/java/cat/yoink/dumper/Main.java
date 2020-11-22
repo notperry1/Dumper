@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -27,43 +28,36 @@ public class Main
 
     @SuppressWarnings("unchecked")
     @Mod.EventHandler
-    public void initialize(FMLInitializationEvent event)
+    public void initialize(FMLInitializationEvent event) throws NoSuchFieldException, IOException, IllegalAccessException
     {
         logger.info("Dumping class loader...");
 
-        try
+        Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
+        field.setAccessible(true);
+
+        Map<String, byte[]> cache = (Map<String, byte[]>) field.get(Launch.classLoader);
+
+        File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
+        ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
+
+        for (Map.Entry<String, byte[]> e : cache.entrySet())
         {
-            Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
-            field.setAccessible(true);
+            ZipEntry entry = new ZipEntry(e.getKey().replace(".", "/") + ".class");
 
-            Map<String, byte[]> cache = (Map<String, byte[]>) field.get(Launch.classLoader);
-
-            File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
-            ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
-
-            for (Map.Entry<String, byte[]> e : cache.entrySet())
+            try
             {
-                ZipEntry entry = new ZipEntry(e.getKey().replace(".", "/") + ".class");
+                stream.putNextEntry(entry);
 
-                try
-                {
-                    stream.putNextEntry(entry);
-
-                    stream.write(e.getValue());
-                    stream.closeEntry();
-                }
-                catch (Exception ex)
-                {
-                    logger.info("Failed to dump " + e.getKey().replace("/", "."));
-                }
+                stream.write(e.getValue());
+                stream.closeEntry();
             }
+            catch (Exception ex)
+            {
+                logger.info("Failed to dump " + e.getKey().replace("/", "."));
+            }
+        }
 
-            stream.closeEntry();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        stream.closeEntry();
 
         logger.info("Finished dumping classloader");
     }
