@@ -20,6 +20,7 @@ import java.util.zip.ZipOutputStream;
  *
  * @author yoink
  * @since November 11th 2020
+ * @version 1.0
  */
 @Mod(modid = "dumper")
 public class Main
