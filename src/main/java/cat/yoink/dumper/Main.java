@@ -44,6 +44,7 @@ public class Main
             for (Map.Entry<String, byte[]> e : cache.entrySet())
             {
                 ZipEntry entry = new ZipEntry(e.getKey().replace(".", "/") + ".class");
+
                 try
                 {
                     stream.putNextEntry(entry);
@@ -53,7 +54,7 @@ public class Main
                 }
                 catch (Exception ex)
                 {
-                    ex.printStackTrace();
+                    logger.info("Failed to dump " + e.getKey().replace("/", "."));
                 }
             }
 
