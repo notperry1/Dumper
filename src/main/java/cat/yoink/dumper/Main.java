@@ -15,13 +15,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * Class dumper for loaders.
- *
- * @author yoink
- * @since November 11th 2020
- * @version 1.0
- */
 @Mod(modid = "dumper")
 public class Main
 {
