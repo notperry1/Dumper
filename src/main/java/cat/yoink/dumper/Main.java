@@ -26,7 +26,7 @@ public class Main
     @Mod.EventHandler
     public void initialize(final FMLInitializationEvent event) throws NoSuchFieldException, IOException, IllegalAccessException
     {
-        this.logger.info("Dumping class loader...");
+        logger.info("Dumping class loader...");
 
         final Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
         field.setAccessible(true);
@@ -49,12 +49,12 @@ public class Main
             }
             catch (final Exception ex)
             {
-                this.logger.info("Failed to dump " + name.replace("/", "."));
+                logger.info("Failed to dump " + name.replace("/", "."));
             }
         });
 
         stream.closeEntry();
 
-        this.logger.info("Finished dumping classloader");
+        logger.info("Finished dumping classloader");
     }
 }
