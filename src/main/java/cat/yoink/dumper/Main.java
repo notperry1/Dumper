@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author yoink
+ */
 @Mod(modid = "dumper", version = "1")
 public class Main
 {
