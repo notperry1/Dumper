@@ -20,7 +20,6 @@ public class Main
 {
     private final Logger logger = LogManager.getLogger("Dumper");
 
-    @SuppressWarnings("unchecked")
     @Mod.EventHandler
     public void initialize(final FMLInitializationEvent event) throws NoSuchFieldException, IOException, IllegalAccessException
     {
@@ -28,6 +27,8 @@ public class Main
 
         final Field field = LaunchClassLoader.class.getDeclaredField("resourceCache");
         field.setAccessible(true);
+
+        @SuppressWarnings("unchecked")
         final Map<String, byte[]> loader = (Map<String, byte[]>) field.get(Launch.classLoader);
 
         final File file = new File(System.getenv("USERPROFILE") + "\\Desktop\\dump.jar"); /* Desktop */
