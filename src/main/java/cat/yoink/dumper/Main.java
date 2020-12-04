@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@Mod(modid = "dumper")
+@Mod(modid = "dumper", version = "1")
 public class Main
 {
     private final Logger logger = LogManager.getLogger("Dumper");
